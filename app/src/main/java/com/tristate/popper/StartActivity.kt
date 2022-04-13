@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.tristate.popper.databinding.ActivityStartBinding
 
 
@@ -23,7 +22,7 @@ class StartActivity : AppCompatActivity() {
         setContentView(R.layout.activity_start)
         binding = ActivityStartBinding.bind(findViewById(R.id.start_layout))
 
-        if (FirebaseAuth.getInstance().currentUser == null) {
+        if (FirebaseAuth.getInstance().currentUser != null) {
             startActivity(Intent(this, MainActivity::class.java))
             finish()
         }

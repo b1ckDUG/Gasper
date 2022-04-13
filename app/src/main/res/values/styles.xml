@@ -12,6 +12,9 @@
 
     <style name="FriendlyButtonStyle" parent="Widget.AppCompat.Button">
         <item name="android:textColor">@color/title</item>
+    </style>
 
+    <style name="MenuStyle" parent="Theme.AppCompat.Light">
+        <item name="android:background">@android:color/white</item>
     </style>
 </resources>
