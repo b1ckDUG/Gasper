@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Popper</string>
+    <string name="hint_username">Username</string>
+    <string name="hint_email">Email</string>
+    <string name="hint_password">Password</string>
+    <string name="hint_rpt_password">Repeat password</string>
+    <string name="sign_up">sign up</string>
+    <string name="sign_up_title">Create a new account</string>
+    <string name="sign_in">sign in</string>
+</resources>
