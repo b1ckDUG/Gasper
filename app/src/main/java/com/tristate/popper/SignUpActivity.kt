@@ -7,8 +7,6 @@ import android.text.TextUtils
 import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
-import com.google.android.gms.tasks.Task
-import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DatabaseReference
@@ -57,9 +55,7 @@ class SignUpActivity : AppCompatActivity() {
                 "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[.#?!@\$%^&*-]).{8,}\$".toRegex()
 
             when {
-                TextUtils.isEmpty(usernameTxt) || TextUtils.isEmpty(emailTxt) || TextUtils.isEmpty(
-                    passwordTxt
-                ) || TextUtils.isEmpty(rptPwdTxt) -> {
+                TextUtils.isEmpty(usernameTxt) || TextUtils.isEmpty(emailTxt) || TextUtils.isEmpty(passwordTxt) || TextUtils.isEmpty(rptPwdTxt) -> {
                     Toast.makeText(this, "All inputs are required", Toast.LENGTH_SHORT).show()
                 }
                 !pwdPattern.matches(passwordTxt) -> {
@@ -74,17 +70,15 @@ class SignUpActivity : AppCompatActivity() {
                 }
                 else -> {
                     signUp(usernameTxt, emailTxt, passwordTxt)
-                    Toast.makeText(this, "Registered successfully", Toast.LENGTH_SHORT).show()
-                    startActivity(Intent(this, StartActivity::class.java))
                 }
             }
         }
     }
 
     private fun signUp(username: String, email: String, password: String) {
-        auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener { taskAuthRes: Task<AuthResult> ->
+        auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener {
             when {
-                taskAuthRes.isSuccessful -> {
+                it.isSuccessful -> {
                     val firebaseUser: FirebaseUser = auth.currentUser!!
                     val userid: String = firebaseUser.uid
 
@@ -95,9 +89,9 @@ class SignUpActivity : AppCompatActivity() {
                     hashMap["username"] = username
                     hashMap["imageURL"] = "default"
 
-                    reference.setValue(hashMap).addOnCompleteListener { taskVoid: Task<Void> ->
+                    reference.setValue(hashMap).addOnCompleteListener { task ->
                         when {
-                            taskVoid.isSuccessful -> {
+                            task.isSuccessful -> {
                                 val intent = Intent(this, MainActivity::class.java)
                                 intent.flags =
                                     Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
