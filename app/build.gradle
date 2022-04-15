@@ -8,7 +8,7 @@ android {
     compileSdk 32
 
     defaultConfig {
-        applicationId "com.tristate.popper"
+        applicationId "com.tristate.gasper"
         minSdk 21
         targetSdk 32
         versionCode 1
@@ -73,4 +73,6 @@ dependencies {
 
     // Other Libraries
     implementation 'com.rengwuxian.materialedittext:library:2.1.4'
+    implementation 'de.hdodenhof:circleimageview:3.1.0'
+    implementation 'com.github.bumptech.glide:glide:4.12.0'
 }

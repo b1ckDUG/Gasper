@@ -1,4 +1,4 @@
-package com.tristate.popper
+package com.tristate.gasper
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -12,7 +12,7 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.rengwuxian.materialedittext.MaterialEditText
-import com.tristate.popper.databinding.ActivitySignUpBinding
+import com.tristate.gasper.databinding.ActivitySignUpBinding
 
 class SignUpActivity : AppCompatActivity() {
 
@@ -87,7 +87,7 @@ class SignUpActivity : AppCompatActivity() {
                     val hashMap: HashMap<String, String> = HashMap()
                     hashMap["id"] = userid
                     hashMap["username"] = username
-                    hashMap["imageURL"] = "default"
+                    hashMap["imageURI"] = "default"
 
                     reference.setValue(hashMap).addOnCompleteListener { task ->
                         when {

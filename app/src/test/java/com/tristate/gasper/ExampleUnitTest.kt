@@ -1,4 +1,4 @@
-package com.tristate.popper
+package com.tristate.gasper
 
 import org.junit.Test
 
