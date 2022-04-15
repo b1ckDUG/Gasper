@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.tristate.popper">
+    package="com.tristate.gasper">
 
     <application
         android:allowBackup="true"
@@ -9,7 +9,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".StartActivity"
+            android:name="com.tristate.gasper.StartActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -18,15 +18,15 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".SignInActivity"
+            android:name="com.tristate.gasper.SignInActivity"
             android:exported="false"
-            android:parentActivityName=".StartActivity" />
+            android:parentActivityName="com.tristate.gasper.StartActivity" />
         <activity
-            android:name=".SignUpActivity"
+            android:name="com.tristate.gasper.SignUpActivity"
             android:exported="false"
-            android:parentActivityName=".StartActivity" />
+            android:parentActivityName="com.tristate.gasper.StartActivity" />
         <activity
-            android:name=".MainActivity"
+            android:name="com.tristate.gasper.MainActivity"
             android:exported="false" />
     </application>
 

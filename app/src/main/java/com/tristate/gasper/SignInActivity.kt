@@ -1,4 +1,4 @@
-package com.tristate.popper
+package com.tristate.gasper
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -9,7 +9,7 @@ import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
 import com.google.firebase.auth.FirebaseAuth
 import com.rengwuxian.materialedittext.MaterialEditText
-import com.tristate.popper.databinding.ActivitySignInBinding
+import com.tristate.gasper.databinding.ActivitySignInBinding
 
 class SignInActivity : AppCompatActivity() {
 

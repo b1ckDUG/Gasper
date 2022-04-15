@@ -41,6 +41,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             app:met_floatingLabel="normal"
+            android:inputType="textEmailAddress"
             android:hint="@string/hint_email" />
 
         <com.rengwuxian.materialedittext.MaterialEditText
@@ -49,6 +50,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             app:met_floatingLabel="normal"
+            android:inputType="textPassword"
             android:hint="@string/hint_password" />
 
         <com.rengwuxian.materialedittext.MaterialEditText
@@ -57,6 +59,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             app:met_floatingLabel="normal"
+            android:inputType="textPassword"
             android:hint="@string/hint_rpt_password" />
 
         <Button

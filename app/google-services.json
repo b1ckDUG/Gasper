@@ -1,41 +1,41 @@
 {
   "project_info": {
-    "project_number": "882785819918",
-    "project_id": "popper-d498f",
-    "storage_bucket": "popper-d498f.appspot.com"
+    "project_number": "457978169791",
+    "project_id": "gasper-31b97",
+    "storage_bucket": "gasper-31b97.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:882785819918:android:447df5586ef49d53c60b5f",
+        "mobilesdk_app_id": "1:457978169791:android:d3902bf848932b66cab90a",
         "android_client_info": {
-          "package_name": "com.tristate.popper"
+          "package_name": "com.tristate.gasper"
         }
       },
       "oauth_client": [
         {
-          "client_id": "882785819918-6b7k731hq05gjs2544m1cbgbdtfuiaqi.apps.googleusercontent.com",
+          "client_id": "457978169791-512v0f72n0o71ulrb7ub22mif9lm8khn.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.tristate.popper",
+            "package_name": "com.tristate.gasper",
             "certificate_hash": "3432688612bb8e33a640829989cb6995308285cf"
           }
         },
         {
-          "client_id": "882785819918-6qqulafo1ocks83qauna5irgjh6pduu9.apps.googleusercontent.com",
+          "client_id": "457978169791-h02fj3vsjhv9ej5k1t5laf33udr5reku.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDPYwpjhYYTfo6Bm42F5bNm5x2hkS2ZpMg"
+          "current_key": "AIzaSyB24yb-1fHC-tLewtivFJCqkhyd_fv5foQ"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "882785819918-6qqulafo1ocks83qauna5irgjh6pduu9.apps.googleusercontent.com",
+              "client_id": "457978169791-h02fj3vsjhv9ej5k1t5laf33udr5reku.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
