@@ -9,7 +9,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name="com.tristate.gasper.StartActivity"
+            android:name=".StartActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -18,15 +18,15 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.tristate.gasper.SignInActivity"
+            android:name=".SignInActivity"
             android:exported="false"
-            android:parentActivityName="com.tristate.gasper.StartActivity" />
+            android:parentActivityName=".StartActivity" />
         <activity
-            android:name="com.tristate.gasper.SignUpActivity"
+            android:name=".SignUpActivity"
             android:exported="false"
-            android:parentActivityName="com.tristate.gasper.StartActivity" />
+            android:parentActivityName=".StartActivity" />
         <activity
-            android:name="com.tristate.gasper.MainActivity"
+            android:name=".MainActivity"
             android:exported="false" />
     </application>
 
