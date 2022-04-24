@@ -61,6 +61,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
+                TODO("Not yet implemented")
             }
         })
 

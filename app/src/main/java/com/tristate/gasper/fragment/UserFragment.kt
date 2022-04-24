@@ -61,6 +61,7 @@ class UserFragment : Fragment() {
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
+                TODO("Not yet implemented")
             }
         })
     }

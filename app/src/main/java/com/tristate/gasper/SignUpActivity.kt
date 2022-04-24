@@ -30,17 +30,17 @@ class SignUpActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_up)
-        binding = ActivitySignUpBinding.bind(findViewById(R.id.reg_layout))
+        binding = ActivitySignUpBinding.bind(findViewById(R.id.sign_up_layout))
 
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
         supportActionBar!!.title = "Sign up"
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
-        username = binding.regUname
-        email = binding.regEmail
-        password = binding.regPwd
-        rptPassword = binding.rptPwd
+        username = binding.username
+        email = binding.email
+        password = binding.password
+        rptPassword = binding.rptPassword
         signUp = binding.signUp
 
         auth = FirebaseAuth.getInstance()
