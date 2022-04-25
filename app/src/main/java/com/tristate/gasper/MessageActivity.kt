@@ -216,6 +216,7 @@ class MessageActivity : AppCompatActivity() {
         return filePath
     }
 
+
     class MyButtonObserver(private val button: ImageButton) : TextWatcher {
         override fun onTextChanged(charSequence: CharSequence, start: Int, count: Int, after: Int) {
             if (charSequence.toString().trim().isNotEmpty()) {
