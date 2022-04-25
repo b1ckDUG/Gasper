@@ -3,6 +3,8 @@ package com.tristate.gasper
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.widget.*
 import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -64,13 +66,13 @@ class MessageActivity : AppCompatActivity() {
         val userid: String = _intent.getStringExtra("userid").toString()
         firebaseUser = FirebaseAuth.getInstance().currentUser!!
 
+        //sendButton.set
+
+        msgText.addTextChangedListener(MyButtonObserver(sendButton))
+
         sendButton.setOnClickListener{
             val message: String = msgText.text.toString()
-            if (message != "") {
-                sendMessage(firebaseUser.uid, userid, message)
-            } else {
-                Toast.makeText(this, "You can't send empty message", Toast.LENGTH_SHORT).show()
-            }
+            if (message != "") sendMessage(firebaseUser.uid, userid, message)
             msgText.setText("")
         }
 
@@ -129,5 +131,20 @@ class MessageActivity : AppCompatActivity() {
                 TODO("Not yet implemented")
             }
         })
+    }
+
+    class MyButtonObserver(private val button: ImageButton) : TextWatcher {
+        override fun onTextChanged(charSequence: CharSequence, start: Int, count: Int, after: Int) {
+            if (charSequence.toString().trim().isNotEmpty()) {
+                button.isEnabled = true
+                button.setBackgroundResource(R.drawable.outline_send_24)
+            } else {
+                button.isEnabled = false
+                button.setBackgroundResource(R.drawable.outline_send_gray_24)
+            }
+        }
+
+        override fun beforeTextChanged(charSequence: CharSequence?, i: Int, i1: Int, i2: Int) {}
+        override fun afterTextChanged(editable: Editable) {}
     }
 }

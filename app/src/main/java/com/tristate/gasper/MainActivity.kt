@@ -71,8 +71,8 @@ class MainActivity : AppCompatActivity() {
         val viewPagerAdapter = ViewPagerAdapter(supportFragmentManager, lifecycle)
 
         viewPagerAdapter.applyList(
-            arrayListOf(ViewPagerAdapter.FragItem({MessageFragment()}, "Messages"),
-            ViewPagerAdapter.FragItem({ UserFragment() }, "Users")))
+            arrayListOf(ViewPagerAdapter.FragItem({MessageFragment()}, "Chats"),
+            ViewPagerAdapter.FragItem({ UserFragment() }, "People")))
 
         viewPager.adapter = viewPagerAdapter
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
