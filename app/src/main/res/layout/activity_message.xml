@@ -24,7 +24,7 @@
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:id="@+id/profile_image"
-                tools:src="@drawable/ic_account_circle_black_36dp"/>
+                tools:src="@mipmap/ic_launcher"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -53,22 +53,12 @@
         android:background="#fff"
         android:padding="5dp">
 
-        <ImageButton
-            android:id="@+id/photo_button"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:background="@drawable/outline_add_photo_alternate_24"
-            android:contentDescription="@string/desc_photo_button" />
-
         <EditText
             android:id="@+id/msg_text"
-            android:layout_width="321dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginStart="0dp"
-            android:layout_marginEnd="0dp"
             android:layout_toStartOf="@+id/send_button"
-            android:layout_toEndOf="@+id/photo_button"
             android:background="@android:color/transparent"
             android:hint="@string/hint_message"
             android:importantForAutofill="no"

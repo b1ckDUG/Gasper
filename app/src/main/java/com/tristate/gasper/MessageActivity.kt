@@ -24,7 +24,6 @@ class MessageActivity : AppCompatActivity() {
     private lateinit var profileImage: CircleImageView
     private lateinit var username: TextView
     private lateinit var sendButton: ImageButton
-    private lateinit var photoButton: ImageButton
     private lateinit var msgText: EditText
 
     private lateinit var messageAdapter: MessageAdapter
@@ -61,7 +60,6 @@ class MessageActivity : AppCompatActivity() {
         profileImage = binding.profileImage
         username = binding.username
         sendButton = binding.sendButton
-        photoButton = binding.photoButton
         msgText = binding.msgText
 
         _intent = intent
@@ -78,10 +76,6 @@ class MessageActivity : AppCompatActivity() {
             msgText.setText("")
         }
 
-        photoButton.setOnClickListener{
-
-        }
-
         reference = FirebaseDatabase.getInstance().getReference("Users").child(userid)
 
         reference.addValueEventListener(object: ValueEventListener {
@@ -89,7 +83,7 @@ class MessageActivity : AppCompatActivity() {
                 val user: User = snapshot.getValue(User::class.java)!!
                 username.text = user.username
                 if (user.imageURI.equals("default")) {
-                    profileImage.setImageResource(R.drawable.ic_account_circle_black_36dp)
+                    profileImage.setImageResource(R.mipmap.ic_launcher)
                 } else {
                     Glide.with(this@MessageActivity).load(user.imageURI).into(profileImage)
                 }
@@ -103,14 +97,13 @@ class MessageActivity : AppCompatActivity() {
         })
     }
 
-    private fun sendMessage(sender: String, receiver: String, text: String) {
+    private fun sendMessage(sender: String, receiver: String, message: String) {
         val reference: DatabaseReference = FirebaseDatabase.getInstance().reference
 
-        val hashMap: HashMap<String, Any?> = HashMap()
+        val hashMap: HashMap<String, Any> = HashMap()
         hashMap["sender"] = sender
         hashMap["receiver"] = receiver
-        hashMap["text"] = text
-        hashMap["photoURI"] = ""
+        hashMap["message"] = message
 
         reference.child("Messages").push().setValue(hashMap)
     }

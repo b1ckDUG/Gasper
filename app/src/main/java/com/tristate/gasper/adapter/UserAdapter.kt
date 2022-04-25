@@ -29,7 +29,7 @@ class UserAdapter(private val mContext: Context, private val mUsers: ArrayList<U
         val user: User = mUsers[position]
         holder.username.text = user.username
         if (user.imageURI.equals("default")) {
-            holder.profileImage.setImageResource(R.drawable.ic_account_circle_black_36dp)
+            holder.profileImage.setImageResource(R.mipmap.ic_launcher)
         } else {
             Glide.with(mContext).load(user.imageURI).into(holder.profileImage)
         }
