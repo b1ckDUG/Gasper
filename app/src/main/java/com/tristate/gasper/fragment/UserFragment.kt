@@ -30,7 +30,7 @@ class UserFragment : Fragment() {
         binding = FragmentUserBinding.inflate(inflater, container, false)
         val view: View = binding.root
 
-        recyclerView = view.findViewById(R.id.recycle_view)
+        recyclerView = view.findViewById(R.id.recycler_view)
         recyclerView.setHasFixedSize(true)
         recyclerView.layoutManager = LinearLayoutManager(context)
 
