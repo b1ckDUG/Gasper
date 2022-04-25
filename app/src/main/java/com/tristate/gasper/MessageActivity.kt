@@ -140,6 +140,64 @@ class MessageActivity : AppCompatActivity() {
         })
     }
 
+    fun selectImage() {
+        val intent: Intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+        if (intent.resolveActivity(packageManager) != null) {
+            startActivityForResult(intent, REQUEST_CODE_SELECT_IMAGE)
+        }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
+        if (requestCode == REQUEST_CODE_STORAGE_PERMISSION && grantResults.isNotEmpty()) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                selectImage()
+            } else {
+                Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == REQUEST_CODE_SELECT_IMAGE && resultCode == RESULT_OK) {
+            if (data != null) {
+                val selectedPhotoURI: Uri = data.data!!
+                /*try {
+                    val inputStream: InputStream = contentResolver.openInputStream(selectedPhotoURI)!!
+                    val bitmap: Bitmap = BitmapFactory.decodeStream(inputStream)
+                    //setimagebitmap
+                } catch (e: Exception) {
+                    Toast.makeText(this, e.message, Toast.LENGTH_SHORT).show()
+                }*/
+                sendMessage(firebaseUser.uid, userid, "", selectedPhotoURI.toString())
+            }
+        }
+    }
+
+    @SuppressLint("Recycle")
+    fun getPathFromURI(content: Uri): String {
+        val filePath: String
+        val cursor: Cursor? = contentResolver.query(content, null, null, null, null)
+
+        if (cursor == null) {
+            filePath = content.path.toString()
+        } else {
+            cursor.moveToFirst()
+            val index: Int = cursor.getColumnIndex("_data")
+            filePath = cursor.getString(index)
+            cursor.close()
+        }
+
+        return filePath
+    }
+
     class MyButtonObserver(private val button: ImageButton) : TextWatcher {
         override fun onTextChanged(charSequence: CharSequence, start: Int, count: Int, after: Int) {
             if (charSequence.toString().trim().isNotEmpty()) {
