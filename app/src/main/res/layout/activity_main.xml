@@ -24,7 +24,7 @@
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:id="@+id/profile_image"
-                tools:src="@mipmap/ic_launcher"/>
+                tools:src="@drawable/ic_account_circle_black_36dp"/>
 
             <TextView
                 android:layout_width="wrap_content"

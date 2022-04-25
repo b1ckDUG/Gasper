@@ -54,7 +54,7 @@ class MainActivity : AppCompatActivity() {
                 val user: User? = dataSnapshot.getValue(User::class.java)
                 username.text = user?.username
                 if (user?.imageURI.equals("default")) {
-                    profileImage.setImageResource(R.mipmap.ic_launcher)
+                    profileImage.setImageResource(R.drawable.ic_account_circle_black_36dp)
                 } else {
                     Glide.with(this@MainActivity).load(user?.imageURI).into(profileImage)
                 }
