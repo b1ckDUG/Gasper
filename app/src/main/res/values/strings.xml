@@ -9,4 +9,7 @@
     <string name="sign_in">Sign in</string>
     <string name="sign_in_title">Welcome!</string>
     <string name="sign_out">Sign out</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="desc_send_button">Send Message</string>
+    <string name="hint_message">Type a message…</string>
 </resources>

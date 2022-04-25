@@ -29,8 +29,8 @@ class StartActivity : AppCompatActivity() {
         setContentView(R.layout.activity_start)
         binding = ActivityStartBinding.bind(findViewById(R.id.start_layout))
 
-        signIn = binding.startSignIn
-        signUp = binding.startSignUp
+        signIn = binding.signIn
+        signUp = binding.signUp
 
         signIn.setOnClickListener {
             startActivity(Intent(this, SignInActivity::class.java))

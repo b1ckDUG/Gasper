@@ -24,15 +24,15 @@ class SignInActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_in)
-        binding = ActivitySignInBinding.bind(findViewById(R.id.login_layout))
+        binding = ActivitySignInBinding.bind(findViewById(R.id.sign_in_layout))
 
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
         supportActionBar!!.title = "Sign in"
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
-        email = binding.loginEmail
-        password = binding.loginPwd
+        email = binding.email
+        password = binding.password
         signIn = binding.signIn
 
         auth = FirebaseAuth.getInstance()

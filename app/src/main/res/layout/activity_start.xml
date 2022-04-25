@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/start_layout"
     android:layout_width="match_parent"
@@ -17,17 +16,16 @@
         android:textStyle="bold" />
 
     <Button
-        android:id="@+id/start_sign_in"
+        android:id="@+id/sign_in"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="100dp"
         android:text="@string/sign_in" />
 
     <Button
-        android:id="@+id/start_sign_up"
+        android:id="@+id/sign_up"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/sign_up" />
-
 
 </LinearLayout>
