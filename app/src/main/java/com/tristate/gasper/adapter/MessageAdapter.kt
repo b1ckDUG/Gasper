@@ -31,7 +31,6 @@ class MessageAdapter(private val mContext: Context,
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
             TXT_TYPE_SENT -> {
-                Log.v("message", "1")
                 val view: View =
                     LayoutInflater.from(mContext).inflate(R.layout.sent_message_item, parent, false)
                 TextViewHolder(view)
@@ -57,7 +56,6 @@ class MessageAdapter(private val mContext: Context,
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val msg: GasperMessage = mMsgs[position]
         if (!mMsgs[position].text.equals("")) {
-            Log.v("message", msg.text.toString())
             (holder as TextViewHolder).textItem.text = msg.text
         } else {
             Glide.with((holder as PhotoViewHolder).photoItem.context).load(msg.photoURI).into(holder.photoItem)
