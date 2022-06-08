@@ -24,7 +24,6 @@
             android:maxHeight="200dp"
             android:scaleType="fitCenter"
             tools:srcCompat="@android:drawable/ic_menu_gallery" />
-
     </androidx.cardview.widget.CardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
