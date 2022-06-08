@@ -13,11 +13,11 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
 import com.tristate.gasper.R
 import com.tristate.gasper.adapter.UserAdapter
-import com.tristate.gasper.databinding.FragmentUserBinding
+import com.tristate.gasper.databinding.FragmentPeopleBinding
 
-class UserFragment : Fragment() {
+class PeopleFragment : Fragment() {
 
-    private lateinit var binding: FragmentUserBinding
+    private lateinit var binding: FragmentPeopleBinding
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var userAdapter: UserAdapter
@@ -27,10 +27,10 @@ class UserFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentUserBinding.inflate(inflater, container, false)
+        binding = FragmentPeopleBinding.inflate(inflater, container, false)
         val view: View = binding.root
 
-        recyclerView = view.findViewById(R.id.recycler_view)
+        recyclerView = binding.recyclerView
         recyclerView.setHasFixedSize(true)
         recyclerView.layoutManager = LinearLayoutManager(context)
 

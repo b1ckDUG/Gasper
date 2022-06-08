@@ -19,8 +19,8 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
 import com.tristate.gasper.databinding.ActivityMainBinding
-import com.tristate.gasper.fragment.MessageFragment
-import com.tristate.gasper.fragment.UserFragment
+import com.tristate.gasper.fragment.ChatsFragment
+import com.tristate.gasper.fragment.PeopleFragment
 import com.tristate.gasper.model.User
 import de.hdodenhof.circleimageview.CircleImageView
 
@@ -71,8 +71,8 @@ class MainActivity : AppCompatActivity() {
         val viewPagerAdapter = ViewPagerAdapter(supportFragmentManager, lifecycle)
 
         viewPagerAdapter.applyList(
-            arrayListOf(ViewPagerAdapter.FragItem({MessageFragment()}, "Chats"),
-            ViewPagerAdapter.FragItem({ UserFragment() }, "People")))
+            arrayListOf(ViewPagerAdapter.FragItem({ChatsFragment()}, "Chats"),
+            ViewPagerAdapter.FragItem({ PeopleFragment() }, "People")))
 
         viewPager.adapter = viewPagerAdapter
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
