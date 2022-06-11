@@ -31,7 +31,6 @@ class ChatsFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
         binding = FragmentChatsBinding.inflate(inflater, container, false)
-        val view = binding.root
 
         recyclerView = binding.recycleView
         recyclerView.setHasFixedSize(true)
@@ -49,10 +48,24 @@ class ChatsFragment : Fragment() {
                 for (snapshot in dataSnapshot.children) {
                     val msg: GasperMessage = snapshot.getValue(GasperMessage::class.java)!!
                     if (msg.sender!! == firebaseUser.uid) {
-                        usersList.add(msg.receiver!!)
+                        var isAdded = false
+                        for (id in usersList) {
+                            if (msg.receiver == id) {
+                                isAdded = true
+                                break
+                            }
+                        }
+                        if (!isAdded) usersList.add(msg.receiver!!)
                     }
                     if (msg.receiver!! == firebaseUser.uid) {
-                        usersList.add(msg.sender!!)
+                        var isAdded = false
+                        for (id in usersList) {
+                            if (msg.receiver == id) {
+                                isAdded = true
+                                break
+                            }
+                        }
+                        if (!isAdded) usersList.add(msg.sender!!)
                     }
                 }
 
@@ -60,12 +73,11 @@ class ChatsFragment : Fragment() {
             }
 
             override fun onCancelled(error: DatabaseError) {
-                TODO("Not yet implemented")
             }
 
         })
 
-        return view
+        return binding.root
     }
 
     private fun readChats() {
@@ -81,26 +93,17 @@ class ChatsFragment : Fragment() {
                     val user: User = snapshot.getValue(User::class.java)!!
 
                     for (id in usersList) {
-                        if (user.id.equals(id)) {
-                            if (mUsers.size != 0) {
-                                for (user1 in mUsers) {
-                                    if (!user.id.equals(user1.id)) {
-                                        mUsers.add(user)
-                                    }
-                                }
-                            } else {
-                                mUsers.add(user)
-                            }
+                        if (user.id == id) {
+                            mUsers.add(user)
                         }
                     }
                 }
 
-                userAdapter = UserAdapter(context!!, mUsers)
+                userAdapter = UserAdapter(context, mUsers, false)
                 recyclerView.adapter = userAdapter
             }
 
             override fun onCancelled(error: DatabaseError) {
-                TODO("Not yet implemented")
             }
 
         })

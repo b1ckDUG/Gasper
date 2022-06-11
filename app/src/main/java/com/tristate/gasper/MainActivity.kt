@@ -7,6 +7,7 @@ import android.view.MenuItem
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
@@ -21,6 +22,7 @@ import com.google.firebase.database.*
 import com.tristate.gasper.databinding.ActivityMainBinding
 import com.tristate.gasper.fragment.ChatsFragment
 import com.tristate.gasper.fragment.PeopleFragment
+import com.tristate.gasper.fragment.ProfileFragment
 import com.tristate.gasper.model.User
 import de.hdodenhof.circleimageview.CircleImageView
 
@@ -33,6 +35,8 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var firebaseUser: FirebaseUser
     private lateinit var reference: DatabaseReference
+
+    private lateinit var drawerLayout: DrawerLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,12 +60,11 @@ class MainActivity : AppCompatActivity() {
                 if (user?.imageURI.equals("default")) {
                     profileImage.setImageResource(R.drawable.ic_account_circle_black_36dp)
                 } else {
-                    Glide.with(this@MainActivity).load(user?.imageURI).into(profileImage)
+                    Glide.with(applicationContext).load(user?.imageURI).into(profileImage)
                 }
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
-                TODO("Not yet implemented")
             }
         })
 
@@ -72,7 +75,8 @@ class MainActivity : AppCompatActivity() {
 
         viewPagerAdapter.applyList(
             arrayListOf(ViewPagerAdapter.FragItem({ChatsFragment()}, "Chats"),
-            ViewPagerAdapter.FragItem({ PeopleFragment() }, "People")))
+            ViewPagerAdapter.FragItem({ PeopleFragment() }, "People"),
+            ViewPagerAdapter.FragItem({ProfileFragment()}, "Profile")))
 
         viewPager.adapter = viewPagerAdapter
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
@@ -89,8 +93,7 @@ class MainActivity : AppCompatActivity() {
         when (item.itemId) {
             R.id.sign_out -> {
                 FirebaseAuth.getInstance().signOut()
-                startActivity(Intent(this, StartActivity::class.java))
-                finish()
+                startActivity(Intent(this, StartActivity::class.java).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
                 return true
             }
         }
@@ -118,7 +121,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    /*
+
     private fun status(status: String) {
         reference = FirebaseDatabase.getInstance().getReference("Users").child(firebaseUser.uid)
         val hashMap = HashMap<String, Any>()
@@ -135,5 +138,5 @@ class MainActivity : AppCompatActivity() {
         super.onPause()
         status("offline")
     }
-    */
+
 }
