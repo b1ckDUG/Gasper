@@ -7,18 +7,28 @@
     android:layout_margin="10dp">
 
     <TextView
-        android:id="@+id/messageTextView"
+        android:id="@+id/message_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:maxWidth="250dp"
         android:layout_marginStart="10dp"
-        android:padding="10dp"
         android:background="@drawable/rounded_message_gray"
+        android:maxWidth="250dp"
+        android:padding="10dp"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@android:color/black"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="This is a message" />
+
+    <TextView
+        android:id="@+id/seen_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:text="@string/seen_ntf"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/message_view" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

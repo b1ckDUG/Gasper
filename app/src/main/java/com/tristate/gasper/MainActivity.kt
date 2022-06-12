@@ -7,7 +7,7 @@ import android.view.MenuItem
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import androidx.drawerlayout.widget.DrawerLayout
+//import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
@@ -36,7 +36,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var firebaseUser: FirebaseUser
     private lateinit var reference: DatabaseReference
 
-    private lateinit var drawerLayout: DrawerLayout
+    //private lateinit var drawerLayout: DrawerLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,6 +60,7 @@ class MainActivity : AppCompatActivity() {
                 if (user?.imageURI.equals("default")) {
                     profileImage.setImageResource(R.drawable.ic_account_circle_black_36dp)
                 } else {
+
                     Glide.with(applicationContext).load(user?.imageURI).into(profileImage)
                 }
             }
@@ -69,7 +70,7 @@ class MainActivity : AppCompatActivity() {
         })
 
         val tabLayout: TabLayout = binding.tabLayout
-        val viewPager: ViewPager2 = binding.viewPager
+        val viewPager: ViewPager2 = binding.tabPager
 
         val viewPagerAdapter = ViewPagerAdapter(supportFragmentManager, lifecycle)
 
@@ -120,7 +121,6 @@ class MainActivity : AppCompatActivity() {
             return fragments[position].title
         }
     }
-
 
     private fun status(status: String) {
         reference = FirebaseDatabase.getInstance().getReference("Users").child(firebaseUser.uid)

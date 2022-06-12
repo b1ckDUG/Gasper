@@ -32,7 +32,7 @@ class PeopleFragment : Fragment() {
     ): View {
         binding = FragmentPeopleBinding.inflate(inflater, container, false)
 
-        recyclerView = binding.recyclerView
+        recyclerView = binding.peopleRecycler
         recyclerView.setHasFixedSize(true)
         recyclerView.layoutManager = LinearLayoutManager(context)
 
@@ -73,7 +73,7 @@ class PeopleFragment : Fragment() {
                     }
                 }
 
-                userAdapter = UserAdapter(context!!, mUsers, false)
+                userAdapter = UserAdapter(context, mUsers, false)
                 recyclerView.adapter = userAdapter
             }
 
@@ -98,9 +98,11 @@ class PeopleFragment : Fragment() {
                             mUsers.add(user)
                         }
                     }
-                    userAdapter = UserAdapter(context, mUsers, false) }
-                    recyclerView.adapter = userAdapter
                 }
+
+                userAdapter = UserAdapter(context, mUsers, false)
+                recyclerView.adapter = userAdapter
+            }
 
             override fun onCancelled(error: DatabaseError) {
             }

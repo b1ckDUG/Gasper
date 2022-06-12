@@ -10,9 +10,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
+import com.google.firebase.messaging.FirebaseMessaging
 import com.tristate.gasper.adapter.UserAdapter
 import com.tristate.gasper.databinding.FragmentChatsBinding
-import com.tristate.gasper.model.GasperMessage
+import com.tristate.gasper.model.ChatItem
 import com.tristate.gasper.model.User
 
 class ChatsFragment : Fragment() {
@@ -26,13 +27,13 @@ class ChatsFragment : Fragment() {
     private lateinit var firebaseUser: FirebaseUser
     private lateinit var reference: DatabaseReference
 
-    private lateinit var usersList: ArrayList<String>
+    private lateinit var usersList: ArrayList<ChatItem>
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
         binding = FragmentChatsBinding.inflate(inflater, container, false)
 
-        recyclerView = binding.recycleView
+        recyclerView = binding.chatsRecycler
         recyclerView.setHasFixedSize(true)
         recyclerView.layoutManager = LinearLayoutManager(context)
 
@@ -40,36 +41,16 @@ class ChatsFragment : Fragment() {
 
         usersList = ArrayList()
 
-        reference = FirebaseDatabase.getInstance().getReference("Messages")
+        reference = FirebaseDatabase.getInstance().getReference("ChatItem").child(firebaseUser.uid)
         reference.addValueEventListener(object: ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
+            override fun onDataChange(snapshot: DataSnapshot) {
                 usersList.clear()
-
-                for (snapshot in dataSnapshot.children) {
-                    val msg: GasperMessage = snapshot.getValue(GasperMessage::class.java)!!
-                    if (msg.sender!! == firebaseUser.uid) {
-                        var isAdded = false
-                        for (id in usersList) {
-                            if (msg.receiver == id) {
-                                isAdded = true
-                                break
-                            }
-                        }
-                        if (!isAdded) usersList.add(msg.receiver!!)
-                    }
-                    if (msg.receiver!! == firebaseUser.uid) {
-                        var isAdded = false
-                        for (id in usersList) {
-                            if (msg.receiver == id) {
-                                isAdded = true
-                                break
-                            }
-                        }
-                        if (!isAdded) usersList.add(msg.sender!!)
-                    }
+                for (dataSnapshot in snapshot.children) {
+                    val chatItem = dataSnapshot.getValue(ChatItem::class.java)
+                    usersList.add(chatItem!!)
                 }
 
-                readChats()
+                chatItem()
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -80,32 +61,25 @@ class ChatsFragment : Fragment() {
         return binding.root
     }
 
-    private fun readChats() {
+    private fun chatItem() {
         mUsers = ArrayList()
-
         reference = FirebaseDatabase.getInstance().getReference("Users")
-
-        reference.addValueEventListener(object: ValueEventListener{
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
+        reference.addValueEventListener(object: ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
                 mUsers.clear()
-
-                for (snapshot in dataSnapshot.children) {
-                    val user: User = snapshot.getValue(User::class.java)!!
-
-                    for (id in usersList) {
-                        if (user.id == id) {
+                for (dataSnapshot in snapshot.children) {
+                    val user: User = dataSnapshot.getValue(User::class.java)!!
+                    for (chatItem: ChatItem in usersList) {
+                        if (user.id.equals(chatItem.id)) {
                             mUsers.add(user)
                         }
                     }
                 }
-
-                userAdapter = UserAdapter(context, mUsers, false)
+                userAdapter = UserAdapter(context, mUsers, true)
                 recyclerView.adapter = userAdapter
             }
 
-            override fun onCancelled(error: DatabaseError) {
-            }
-
+            override fun onCancelled(error: DatabaseError) {}
         })
     }
 }

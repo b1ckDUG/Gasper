@@ -1,6 +1,8 @@
 package com.tristate.gasper.adapter
 
+import android.annotation.SuppressLint
 import android.content.Context
+import android.net.wifi.p2p.WifiP2pManager
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -13,6 +15,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.tristate.gasper.R
 import com.tristate.gasper.model.GasperMessage
+import java.security.KeyStore
 
 class MessageAdapter(private val mContext: Context,
                      private val mMsgs: ArrayList<GasperMessage>) :
@@ -21,11 +24,13 @@ class MessageAdapter(private val mContext: Context,
     private lateinit var firebaseUser: FirebaseUser
 
     class TextViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var textItem: TextView = itemView.findViewById(R.id.messageTextView)
+        var textItem: TextView = itemView.findViewById(R.id.message_view)
+        var seenText: TextView = itemView.findViewById(R.id.seen_text)
     }
 
     class PhotoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var photoItem: ImageView = itemView.findViewById(R.id.messageImageView)
+        var photoItem: ImageView = itemView.findViewById(R.id.message_image)
+        var seenText: TextView = itemView.findViewById(R.id.seen_text)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -53,12 +58,37 @@ class MessageAdapter(private val mContext: Context,
         }
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val msg: GasperMessage = mMsgs[position]
-        if (!mMsgs[position].text.equals("")) {
+        if (!msg.text.equals("")) {
             (holder as TextViewHolder).textItem.text = msg.text
         } else {
             Glide.with((holder as PhotoViewHolder).photoItem.context).load(msg.photoURI).into(holder.photoItem)
+        }
+
+        if (position == mMsgs.size - 1) {
+            if (msg.seen) {
+                if (!msg.text.equals("")) {
+                    (holder as TextViewHolder).seenText.text = "Seen"
+                    holder.seenText.visibility = View.VISIBLE
+                }
+                else {
+                    (holder as PhotoViewHolder).seenText.text = "Seen"
+                    holder.seenText.visibility = View.VISIBLE
+                }
+            } else {
+                if (!msg.text.equals("")) {
+                    (holder as TextViewHolder).seenText.text = "Delivered"
+                    holder.seenText.visibility = View.VISIBLE
+                } else {
+                    (holder as PhotoViewHolder).seenText.text = "Delivered"
+                    holder.seenText.visibility = View.VISIBLE
+                }
+            }
+        } else {
+            if (!msg.text.equals("")) (holder as TextViewHolder).seenText.visibility = View.GONE
+            else (holder as PhotoViewHolder).seenText.visibility = View.GONE
         }
     }
 

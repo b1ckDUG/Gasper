@@ -47,7 +47,7 @@ class ProfileFragment: Fragment() {
         storageReference = FirebaseStorage.getInstance().getReference("uploads")
 
         firebaseUser = FirebaseAuth.getInstance().currentUser!!
-        reference =FirebaseDatabase.getInstance().getReference("Users").child(firebaseUser.uid)
+        reference = FirebaseDatabase.getInstance().getReference("Users").child(firebaseUser.uid)
 
         reference.addValueEventListener(object: ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -130,6 +130,6 @@ class ProfileFragment: Fragment() {
     }
 
     companion object {
-        var IMAGE_REQUEST: Int = 1
+        const val IMAGE_REQUEST: Int = 1
     }
 }

@@ -12,11 +12,11 @@
         layout="@layout/toolbar_layout" />
 
     <LinearLayout
-        android:layout_below="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
+        android:layout_below="@+id/toolbar"
         android:gravity="center_horizontal"
+        android:orientation="vertical"
         android:padding="16dp">
 
         <TextView
@@ -31,8 +31,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            app:met_floatingLabel="normal"
             android:hint="@string/hint_username"
+            app:met_floatingLabel="normal"
             tools:text="mr_butt_licking" />
 
         <com.rengwuxian.materialedittext.MaterialEditText
@@ -40,35 +40,35 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            app:met_floatingLabel="normal"
+            android:hint="@string/hint_email"
             android:inputType="textEmailAddress"
-            android:hint="@string/hint_email" />
+            app:met_floatingLabel="normal" />
 
         <com.rengwuxian.materialedittext.MaterialEditText
             android:id="@+id/password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            app:met_floatingLabel="normal"
+            android:hint="@string/hint_password"
             android:inputType="textPassword"
-            android:hint="@string/hint_password" />
+            app:met_floatingLabel="normal" />
 
         <com.rengwuxian.materialedittext.MaterialEditText
             android:id="@+id/rpt_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            app:met_floatingLabel="normal"
+            android:hint="@string/hint_rpt_password"
             android:inputType="textPassword"
-            android:hint="@string/hint_rpt_password" />
+            app:met_floatingLabel="normal" />
 
         <Button
             android:id="@+id/sign_up"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/sign_up"
-            android:background="@color/primary_dark"
             android:layout_marginTop="10dp"
+            android:background="@color/primary_dark"
+            android:text="@string/sign_up"
             android:textColor="#fff" />
     </LinearLayout>
 

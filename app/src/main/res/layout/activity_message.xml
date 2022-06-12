@@ -21,32 +21,32 @@
             app:popupTheme="@style/MenuStyle">
 
             <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/profile_image"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:id="@+id/profile_image"
-                tools:src="@drawable/ic_account_circle_black_36dp"/>
+                tools:src="@drawable/ic_account_circle_black_36dp" />
 
             <TextView
+                android:id="@+id/username"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/username"
-                tools:text="username"
                 android:layout_marginStart="25dp"
-                android:textColor="@color/title" />
+                android:textColor="@color/title"
+                tools:text="username" />
 
         </androidx.appcompat.widget.Toolbar>
 
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_view"
+        android:id="@+id/msg_recycler"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/bottom"
+        android:layout_above="@+id/msg_layout"
         android:layout_below="@+id/bar_layout" />
 
     <RelativeLayout
-        android:id="@+id/bottom"
+        android:id="@+id/msg_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"

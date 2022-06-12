@@ -1,11 +1,11 @@
 package com.tristate.gasper
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
 import android.widget.Button
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -76,11 +76,28 @@ class SignUpActivity : AppCompatActivity() {
     }
 
     private fun signUp(username: String, email: String, password: String) {
+
         auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener {
             when {
                 it.isSuccessful -> {
                     val firebaseUser: FirebaseUser = auth.currentUser!!
                     val userid: String = firebaseUser.uid
+
+                    firebaseUser.sendEmailVerification().addOnCompleteListener {
+                        if (it.isSuccessful) {
+                            Toast.makeText(
+                                this@SignUpActivity,
+                                "Please check your email for verification",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            this.username.setText("")
+                            this.email.setText("")
+                            this.password.setText("")
+                            this.rptPassword.setText("")
+                        } else {
+                            Toast.makeText(this@SignUpActivity, it.exception.toString(), Toast.LENGTH_SHORT).show()
+                        }
+                    }
 
                     reference = FirebaseDatabase.getInstance().getReference("Users").child(userid)
 
@@ -88,25 +105,14 @@ class SignUpActivity : AppCompatActivity() {
                     hashMap["id"] = userid
                     hashMap["username"] = username
                     hashMap["imageURI"] = "default"
-
-                    reference.setValue(hashMap).addOnCompleteListener { task ->
-                        when {
-                            task.isSuccessful -> {
-                                val intent = Intent(this, MainActivity::class.java)
-                                intent.flags =
-                                    Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-                                startActivity(intent)
-                                finish()
-                            }
-                            else -> {
-                                Toast.makeText(
-                                    this,
-                                    "You cannot register with this email or password",
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                            }
-                        }
-                    }
+                    hashMap["status"] = "offline"
+                    reference.setValue(hashMap)
+                } else -> {
+                    Toast.makeText(
+                        this,
+                        "You cannot register with this email or password",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
         }

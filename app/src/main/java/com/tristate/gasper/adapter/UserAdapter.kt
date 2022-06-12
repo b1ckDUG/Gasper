@@ -22,8 +22,8 @@ class UserAdapter(
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var username: TextView = itemView.findViewById(R.id.username)
         var profileImage: ImageView = itemView.findViewById(R.id.profile_image)
-        val imgOn: ImageView = itemView.findViewById(R.id.img_on)
-        val imgOff: ImageView = itemView.findViewById(R.id.img_off)
+        val onImg: ImageView = itemView.findViewById(R.id.on_image)
+        val offImg: ImageView = itemView.findViewById(R.id.off_image)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -41,16 +41,16 @@ class UserAdapter(
         }
 
         if (isChat) {
-            if (user.status == "online") {
-                holder.imgOn.visibility = View.VISIBLE
-                holder.imgOff.visibility = View.GONE
+            if (user.status.equals("online")) {
+                holder.onImg.visibility = View.VISIBLE
+                holder.offImg.visibility = View.GONE
             } else {
-                holder.imgOn.visibility = View.GONE
-                holder.imgOff.visibility = View.VISIBLE
+                holder.onImg.visibility = View.GONE
+                holder.offImg.visibility = View.VISIBLE
             }
         } else {
-            holder.imgOn.visibility = View.GONE
-            holder.imgOff.visibility = View.GONE
+            holder.onImg.visibility = View.GONE
+            holder.offImg.visibility = View.GONE
         }
 
         holder.itemView.setOnClickListener{

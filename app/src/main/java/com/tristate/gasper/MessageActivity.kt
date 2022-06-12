@@ -2,17 +2,17 @@ package com.tristate.gasper
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.app.ProgressDialog
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.database.Cursor
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
 import android.text.Editable
 import android.text.TextWatcher
+import android.webkit.MimeTypeMap
 import android.widget.*
 import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ActivityCompat
@@ -23,12 +23,15 @@ import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
+import com.google.firebase.storage.UploadTask
 import com.tristate.gasper.adapter.MessageAdapter
 import com.tristate.gasper.databinding.ActivityMessageBinding
+import com.tristate.gasper.fragment.ProfileFragment
 import com.tristate.gasper.model.GasperMessage
 import com.tristate.gasper.model.User
 import de.hdodenhof.circleimageview.CircleImageView
-import java.io.InputStream
 
 class MessageActivity : AppCompatActivity() {
 
@@ -45,11 +48,17 @@ class MessageActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMessageBinding
 
+    private lateinit var storageReference: StorageReference
     private lateinit var firebaseUser: FirebaseUser
     private lateinit var reference: DatabaseReference
 
     private lateinit var _intent: Intent
     private lateinit var userid: String
+
+    private lateinit var imageUri: Uri
+    private lateinit var uploadTask: UploadTask
+
+    private lateinit var seenListener: ValueEventListener
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,7 +73,7 @@ class MessageActivity : AppCompatActivity() {
             startActivity(Intent(this@MessageActivity, MainActivity::class.java).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
         }
 
-        recyclerView = binding.recyclerView
+        recyclerView = binding.msgRecycler
         recyclerView.setHasFixedSize(true)
         val linearLayoutManager= LinearLayoutManager(applicationContext)
         linearLayoutManager.stackFromEnd = true
@@ -78,6 +87,9 @@ class MessageActivity : AppCompatActivity() {
 
         _intent = intent
         userid = _intent.getStringExtra("userid").toString()
+
+        storageReference = FirebaseStorage.getInstance().getReference("uploads")
+
         firebaseUser = FirebaseAuth.getInstance().currentUser!!
 
         msgText.addTextChangedListener(MyButtonObserver(sendButton))
@@ -89,26 +101,19 @@ class MessageActivity : AppCompatActivity() {
         }
 
         photoButton.setOnClickListener{
-            if (ContextCompat.checkSelfPermission(
-                    applicationContext, Manifest.permission.READ_EXTERNAL_STORAGE
-            ) != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(this@MessageActivity,
-                    arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), REQUEST_CODE_STORAGE_PERMISSION)
-            } else {
-                selectImage()
-            }
+            openImage()
         }
 
         reference = FirebaseDatabase.getInstance().getReference("Users").child(userid)
 
         reference.addValueEventListener(object: ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                val user: User = snapshot.getValue(User::class.java)!!
-                username.text = user.username
+                val user = snapshot.getValue(User::class.java)
+                username.text = user!!.username
                 if (user.imageURI.equals("default")) {
                     profileImage.setImageResource(R.drawable.ic_account_circle_black_36dp)
                 } else {
-                    Glide.with(this@MessageActivity).load(user.imageURI).into(profileImage)
+                    Glide.with(applicationContext).load(user.imageURI).into(profileImage)
                 }
 
                 readMessage(firebaseUser.uid, userid)
@@ -117,19 +122,70 @@ class MessageActivity : AppCompatActivity() {
             override fun onCancelled(error: DatabaseError) {
             }
         })
+
+        seenMessage(userid)
     }
 
+    private fun seenMessage(userid: String) {
+        reference = FirebaseDatabase.getInstance().getReference("Messages")
+        seenListener = reference.addValueEventListener(object: ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                for (dataSnapshot in snapshot.children) {
+                    val msg: GasperMessage = dataSnapshot.getValue(GasperMessage::class.java)!!
+                    if (msg.receiver.equals(firebaseUser.uid) && msg.sender.equals(userid)) {
+                        val hashMap = HashMap<String, Any>()
+                        hashMap["seen"] = true
+                        dataSnapshot.ref.updateChildren(hashMap)
+                    }
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+            }
+        })
+    }
 
     private fun sendMessage(sender: String, receiver: String, text: String, photoURI: String) {
         val reference: DatabaseReference = FirebaseDatabase.getInstance().reference
 
-        val hashMap: HashMap<String, Any?> = HashMap()
+        val hashMap = HashMap<String, Any?>()
         hashMap["sender"] = sender
         hashMap["receiver"] = receiver
         hashMap["text"] = text
         hashMap["photoURI"] = photoURI
+        hashMap["seen"] = false
 
         reference.child("Messages").push().setValue(hashMap)
+
+        var chatRef: DatabaseReference = FirebaseDatabase.getInstance().getReference("ChatItem")
+            .child(firebaseUser.uid).child(userid)
+
+        chatRef.addListenerForSingleValueEvent(object: ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if (!snapshot.exists()) {
+                    chatRef.child("id").setValue(userid)
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+            }
+
+        })
+
+        chatRef = FirebaseDatabase.getInstance().getReference("ChatItem")
+            .child(userid).child(firebaseUser.uid)
+
+        chatRef.addListenerForSingleValueEvent(object: ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if (!snapshot.exists()) {
+                    chatRef.child("id").setValue(firebaseUser.uid)
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+            }
+
+        })
     }
 
     fun readMessage(myid: String, userid: String) {
@@ -156,62 +212,78 @@ class MessageActivity : AppCompatActivity() {
         })
     }
 
-    fun selectImage() {
-        val intent: Intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-        if (intent.resolveActivity(packageManager) != null) {
-            startActivityForResult(intent, REQUEST_CODE_SELECT_IMAGE)
-        }
+    private fun status(status: String) {
+        reference = FirebaseDatabase.getInstance().getReference("Users").child(firebaseUser.uid)
+
+        val hashMap = HashMap<String, Any>()
+        hashMap["status"] = status
+
+        reference.updateChildren(hashMap)
     }
 
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+    override fun onResume() {
+        super.onResume()
+        status("online")
+    }
 
-        if (requestCode == REQUEST_CODE_STORAGE_PERMISSION && grantResults.isNotEmpty()) {
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                selectImage()
-            } else {
-                Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show()
+    override fun onPause() {
+        super.onPause()
+        reference.removeEventListener(seenListener)
+        status("offline")
+    }
+
+    private fun openImage() {
+        val intent = Intent()
+        intent.type = "image/*"
+        intent.action = Intent.ACTION_GET_CONTENT
+        startActivityForResult(intent, IMAGE_REQUEST)
+    }
+
+    private fun getFileExtension(uri: Uri): String {
+        val contentResolver = applicationContext?.contentResolver
+        val mimeTypeMap: MimeTypeMap = MimeTypeMap.getSingleton()
+        return mimeTypeMap.getExtensionFromMimeType(contentResolver!!.getType(uri)).toString()
+    }
+
+    private fun uploadImage() {
+        val progressDialog = ProgressDialog(this@MessageActivity)
+        progressDialog.setMessage("Uploading")
+        progressDialog.show()
+        val fileReference = storageReference.child(
+            System.currentTimeMillis()
+                .toString() + "." + getFileExtension(imageUri)
+        )
+        uploadTask = fileReference.putFile(imageUri)
+        uploadTask.continueWithTask { task ->
+            if (!task.isSuccessful) {
+                throw task.exception!!
             }
+            fileReference.downloadUrl
+        }.addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                val downloadUri = task.result
+                val mUri = downloadUri.toString()
+                sendMessage(firebaseUser.uid, userid, "", "" + mUri)
+                progressDialog.dismiss()
+            } else {
+                Toast.makeText(this@MessageActivity, "Failed!", Toast.LENGTH_SHORT).show()
+                progressDialog.dismiss()
+            }
+        }.addOnFailureListener { e ->
+            Toast.makeText(this@MessageActivity, e.message, Toast.LENGTH_SHORT).show()
+            progressDialog.dismiss()
         }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if (requestCode == REQUEST_CODE_SELECT_IMAGE && resultCode == RESULT_OK) {
-            if (data != null) {
-                val selectedPhotoURI: Uri = data.data!!
-                /*try {
-                    val inputStream: InputStream = contentResolver.openInputStream(selectedPhotoURI)!!
-                    val bitmap: Bitmap = BitmapFactory.decodeStream(inputStream)
-                    //setimagebitmap
-                } catch (e: Exception) {
-                    Toast.makeText(this, e.message, Toast.LENGTH_SHORT).show()
-                }*/
-                sendMessage(firebaseUser.uid, userid, "", selectedPhotoURI.toString())
-            }
+        if (requestCode == IMAGE_REQUEST && resultCode == RESULT_OK
+            && data != null && data.data != null) {
+            imageUri = data.data!!
+
+            uploadImage()
         }
-    }
-
-    @SuppressLint("Recycle")
-    fun getPathFromURI(content: Uri): String {
-        val filePath: String
-        val cursor: Cursor? = contentResolver.query(content, null, null, null, null)
-
-        if (cursor == null) {
-            filePath = content.path.toString()
-        } else {
-            cursor.moveToFirst()
-            val index: Int = cursor.getColumnIndex("_data")
-            filePath = cursor.getString(index)
-            cursor.close()
-        }
-
-        return filePath
     }
 
     class MyButtonObserver(private val button: ImageButton) : TextWatcher {
@@ -230,7 +302,6 @@ class MessageActivity : AppCompatActivity() {
     }
 
     companion object {
-        const val REQUEST_CODE_STORAGE_PERMISSION = 1
-        const val REQUEST_CODE_SELECT_IMAGE = 2
+        const val IMAGE_REQUEST = 1
     }
 }

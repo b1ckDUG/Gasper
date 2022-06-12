@@ -21,18 +21,18 @@
             app:popupTheme="@style/MenuStyle">
 
             <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/profile_image"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:id="@+id/profile_image"
-                tools:src="@drawable/ic_account_circle_black_36dp"/>
+                tools:src="@drawable/ic_account_circle_black_36dp" />
 
             <TextView
+                android:id="@+id/username"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/username"
-                tools:text="username"
                 android:layout_marginStart="25dp"
-                android:textColor="@color/title" />
+                android:textColor="@color/title"
+                tools:text="username" />
 
         </androidx.appcompat.widget.Toolbar>
 
@@ -41,16 +41,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/primary_dark"
-            app:tabSelectedTextColor="#fff"
             app:tabIndicatorColor="#fff"
+            app:tabSelectedTextColor="#fff"
             app:tabTextColor="#000" />
 
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/view_pager"
+        android:id="@+id/tab_pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
 </LinearLayout>

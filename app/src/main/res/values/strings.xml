@@ -9,8 +9,12 @@
     <string name="sign_in">Sign in</string>
     <string name="sign_in_title">Welcome!</string>
     <string name="sign_out">Sign out</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="desc_send_button">Send Message</string>
     <string name="hint_message">Type a message…</string>
     <string name="desc_photo_button">Add a photo</string>
+    <string name="seen_ntf">Seen</string>
+    <string name="sent_photo_desc">Sent image</string>
+    <string name="search_hint">Search for someone</string>
+    <string name="profile">Profile</string>
+    <string name="forget_passwd">Forgot your password?</string>
 </resources>

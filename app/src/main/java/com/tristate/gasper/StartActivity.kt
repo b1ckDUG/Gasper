@@ -17,8 +17,8 @@ class StartActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-
-        if (FirebaseAuth.getInstance().currentUser != null) {
+        val firebaseUser = FirebaseAuth.getInstance().currentUser
+        if (firebaseUser != null && firebaseUser.isEmailVerified) {
             startActivity(Intent(this, MainActivity::class.java))
             finish()
         }

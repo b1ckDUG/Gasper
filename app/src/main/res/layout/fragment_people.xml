@@ -6,16 +6,17 @@
     tools:context=".fragment.PeopleFragment">
 
     <EditText
+        android:id="@+id/search_users"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Search for someone"
+        android:hint="@string/search_hint"
         android:importantForAutofill="no"
-        android:id="@+id/search_users"/>
+        android:inputType="text" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_view"
+        android:id="@+id/people_recycler"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/search_users"/>
+        android:layout_below="@+id/search_users" />
 
 </RelativeLayout>
